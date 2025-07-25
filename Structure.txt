@@ -1,0 +1,10 @@
+C:\Sridhar\Python\AI_Projects\asai\
+├── templates\
+│   ├── index.html            # Frontend HTML with form
+│   └── analytics.html           # Page to view saved analytics│
+├── blog_generator.py      # Flask backend
+├── config.py              # Flask configuration
+├── requirements.txt          # Python dependencies
+├── test_openai.py        # test AI service client
+├── test_sqlite.py         # Test SQLite database creation
+└── README.md              # Project documentation

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Content Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .blog-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .blog-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .blog-section {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .blog-section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        .blog-content {
+            line-height: 1.6;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+        .keyword-badge {
+            background-color: #e74c3c;
+            color: white;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .blog-content ul {
+            text-align: left;
+            display: inline-block;
+            margin: 1rem 0;
+            width: 100%;
+        }
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        .blog-intro {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Blog Content Generator</h1>
+        <div class="card p-4">
+            <form id="blog-form">
+                <div class="mb-3">
+                    <label for="topic" class="form-label">Topic:</label>
+                    <input type="text" class="form-control" id="topic" name="topic" placeholder="e.g., Artificial Intelligence" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="0">All</option>
+                        <option value="3">Business</option>
+                        <option value="5">Technology</option>
+                        <option value="7">Finance</option>
+                        <option value="20">Sports</option>
+                        <option value="24">Entertainment</option>
+                        <option value="45">Health</option>
+                        <option value="67">Travel</option>
+                        <option value="71">Food & Drink</option>
+                        <option value="174">Science</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="region" class="form-label">Region:</label>
+                    <select class="form-select" id="region" name="region" required>
+                        <optgroup label="North America">
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="MX">Mexico</option>
+                        </optgroup>
+                        <optgroup label="Europe">
+                            <option value="GB">United Kingdom</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                        </optgroup>
+                        <optgroup label="Asia">
+                            <option value="IN">India</option>
+                            <option value="CN">China</option>
+                            <option value="JP">Japan</option>
+                            <option value="SG">Singapore</option>
+                        </optgroup>
+                        <optgroup label="Oceania">
+                            <option value="AU">Australia</option>
+                            <option value="NZ">New Zealand</option>
+                        </optgroup>
+                        <optgroup label="Middle East">
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="SA">Saudi Arabia</option>
+                        </optgroup>
+                        <optgroup label="Africa">
+                            <option value="ZA">South Africa</option>
+                            <option value="NG">Nigeria</option>
+                        </optgroup>
+                        <optgroup label="South America">
+                            <option value="BR">Brazil</option>
+                            <option value="AR">Argentina</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success" id="generate-btn">Generate Blog</button>
+                <div id="loading" class="mt-3" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Generating blog...</span>
+                </div>
+            </form>
+        </div>
+        <div class="container mt-5">
+            <a href="/blogs" class="btn btn-outline-info">View Saved Blogs</a>
+        </div>
+        <div id="output" class="card p-4 mt-4" style="display: none;">
+            <h2>Generated Blog Content</h2>
+            <div id="keywords-container" class="mb-4"></div>
+            <div id="blog-content" class="blog-container"></div>
+            <div class="action-buttons">
+                <form id="download-form" method="POST" action="/download-blog">
+                    <input type="hidden" id="content" name="content">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-file-earmark-pdf"></i> Download as PDF
+                    </button>
+                </form>
+                <button id="copy-btn" class="btn btn-secondary">
+                    <i class="bi bi-clipboard"></i> Copy Content
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <script>
+        document.getElementById('blog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const topic = document.getElementById('topic').value.trim();
+            if (topic.length < 3) {
+                alert('Topic must be at least 3 characters long');
+                return;
+            }
+            const generateBtn = document.getElementById('generate-btn');
+            const loadingDiv = document.getElementById('loading');
+            generateBtn.disabled = true;
+            loadingDiv.style.display = 'block';
+            try {
+                const formData = new FormData(e.target);
+                const response = await fetch('/generate-blog', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    document.getElementById('output').style.display = 'block';
+                    
+                    // Format keywords as badges
+                    const keywordsContainer = document.getElementById('keywords-container');
+                    keywordsContainer.innerHTML = '<h5>Trending Keywords:</h5><div class="d-flex flex-wrap"></div>';
+                    const keywordsDiv = keywordsContainer.querySelector('div');
+                    result.keywords.forEach(keyword => {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge keyword-badge';
+                        badge.textContent = keyword;
+                        keywordsDiv.appendChild(badge);
+                    });
+                    
+                    // Format the blog content for display
+                    let displayContent = result.blog_content;
+                    displayContent = displayContent.replace(/^# (.*$)/gm, 
+                        '<h1 class="blog-title">$1</h1>');
+                    displayContent = displayContent.replace(/^## (.*$)/gm, 
+                        '<h2 class="blog-section-title">$1</h2>');
+                    displayContent = displayContent.replace(/^### (.*$)/gm,
+                        '<h3 class="blog-subsection-title">$1</h3>');
+                    displayContent = displayContent.replace(/^- (.*$)/gm, 
+                        '<li>$1</li>');
+                    displayContent = displayContent.replace(/^\d+\. (.*$)/gm,
+                        '<li>$1</li>');
+                    displayContent = displayContent.replace(/(<li>.*<\/li>)+/gms, 
+                        '<ul class="blog-list">$&</ul>');
+                    displayContent = displayContent.split('\n\n').map(para => {
+                        if (!para.startsWith('#') && !para.startsWith('##') && !para.startsWith('###') && 
+                            !para.startsWith('- ') && !/^\d+\./.test(para)) {
+                            return `<p class="blog-content">${para.replace(/\n/g, '<br>')}</p>`;
+                        }
+                        return para;
+                    }).join('');
+                    displayContent = displayContent.replace(
+                        /<\/h1>\s*<p class="blog-content">/,
+                        '</h1><p class="blog-content blog-intro">'
+                    );
+                    document.getElementById('blog-content').innerHTML = displayContent;
+                    
+                    // Store raw markdown content for copy and PDF
+                    document.getElementById('content').value = result.blog_content || '';
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error generating blog:', error);
+                alert('Error: ' + error.message);
+            } finally {
+                generateBtn.disabled = false;
+                loadingDiv.style.display = 'none';
+            }
+        });
+
+        // Copy functionality
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const content = document.getElementById('content').value;
+            if (!content) {
+                console.error('No content to copy');
+                alert('No content available to copy. Please generate a blog first.');
+                return;
+            }
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    const btn = document.getElementById('copy-btn');
+                    btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy Content';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for browsers that don't support clipboard API
+                    const textarea = document.createElement('textarea');
+                    textarea.value = content;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        const btn = document.getElementById('copy-btn');
+                        btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+                        setTimeout(() => {
+                            btn.innerHTML = '<i class="bi bi-clipboard"></i> Copy Content';
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Fallback copy failed: ', err);
+                        alert('Failed to copy content. Please try again.');
+                    }
+                    document.body.removeChild(textarea);
+                });
+        });
+    </script>
+</body>
+</html>

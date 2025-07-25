@@ -1,0 +1,7 @@
+VS Code:
+Step 1:
+cd C:\Sridhar\Python\AI_Projects\blog-content-generator
+step 2:
+python -m venv .venv_blog
+step 3:
+.\.venv_blog\Scripts\Activate

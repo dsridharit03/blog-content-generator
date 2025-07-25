@@ -1,0 +1,7 @@
+flask==2.3.3
+pytrends==4.9.2
+openai==1.30.0
+httpx==0.27.0
+httpcore==1.0.5
+reportlab==4.2.2
+flask-bootstrap==3.0.2.3
