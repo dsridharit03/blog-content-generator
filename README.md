@@ -89,7 +89,7 @@ The server will start at http://127.0.0.1:5000. Open this URL in your browser.
 
 
 
-🎯 How to Use
+**🎯 How to Use**
 Generate a Blog:
 
 On the homepage, enter a Topic (e.g., "Renewable Energy").
@@ -100,7 +100,7 @@ Choose a Region (e.g., "US" for United States).
 
 Click "Generate Blog". The app will fetch trends and create content in seconds.
 
-Manage Content:
+**Manage Content:**
 
 View Saved Blogs: Click "View Saved Blogs" to see all your generated content in a table.
 
@@ -112,18 +112,18 @@ Delete: Remove blogs you no longer need.
 
 Download Database: Get a copy of your entire analytics database.
 
-Export:
+**Export:**
 
 After generation, use "Download as PDF" to get a formatted document.
 
 Use "Copy Content" to quickly paste the markdown text into any CMS.
 
-🔧 API Integration Details
+**🔧 API Integration Details**
 Google Trends (pytrends): Used to find the top 5 related, trending queries for a given topic in a specific region and category. This ensures the generated content is relevant and SEO-friendly.
 
 OpenAI GPT-4o: The core engine that writes the blog. It receives a carefully crafted prompt including the topic, category, region, keywords, and strict formatting instructions to produce high-quality, structured markdown output.
 
-🤝 Contributing
+**🤝 Contributing**
 Contributions are welcome! If you have ideas for new features, improvements, or find any bugs, please feel free to:
 
 Fork the Project.
