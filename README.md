@@ -89,7 +89,7 @@ The server will start at http://127.0.0.1:5000. Open this URL in your browser.
 ![Blog_Contnet_Search](https://github.com/user-attachments/assets/f7058b05-9370-47c2-96fc-cbd6f20b0f9e)
 
 **Output**
-![Blog_Contnet_Search](https://github.com/user-attachments/assets/419cea0f-e73f-4500-b3f3-df0209a4b0a8)
+![Blog_Contnet_Output](https://github.com/user-attachments/assets/df590da8-7e47-410c-9734-b0d181fad24d)
 
 
 
