@@ -85,6 +85,14 @@ Run the Application
 python blog_generator.py
 The server will start at http://127.0.0.1:5000. Open this URL in your browser.
 
+**Blog Content Search**
+![Blog_Contnet_Search](https://github.com/user-attachments/assets/f7058b05-9370-47c2-96fc-cbd6f20b0f9e)
+
+**Output**
+![Blog_Contnet_Search](https://github.com/user-attachments/assets/419cea0f-e73f-4500-b3f3-df0209a4b0a8)
+
+
+
 🎯 How to Use
 Generate a Blog:
 
